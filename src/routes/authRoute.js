@@ -10,9 +10,9 @@ router.post('/login', loginUser);
 
 router.post('/forgotpassword', forgotPassword);
 
-router.post('/validate-reset-pin', validateResetPin);
+router.put('/validate-reset-pin', validateResetPin);
 
-router.post('/resetPassword/:token', resetPassword);
+router.put('/resetPassword/:token', resetPassword);
 
 // Uncomment this line to enable email verification route
 // router.get('/verify-email', (req, res, next) => {
