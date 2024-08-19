@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const SPOONACULAR_API_KEY = '6cccc70f90d7457298503623acba6fb1'; 
+const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY; 
 
 const searchRecipes = async (query) => {
   const response = await axios.get('https://api.spoonacular.com/recipes/complexSearch', {
