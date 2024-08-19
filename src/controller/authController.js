@@ -19,8 +19,7 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10)
 
     const user = await User.create({ username, email, password: hashedPassword });
 
@@ -33,7 +32,6 @@ const registerUser = async (req, res) => {
 
     res.status(201).json({
       message: 'User registered successfully!',
-      _id: user._id,
       username: user.username,
       email: user.email,
       token: generateToken(user._id),
@@ -48,18 +46,19 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email });
+
+    const hashedPassword = user.password;
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, hashedPassword);
+    
 
     if (isMatch) {
       res.json({
         message: 'Login successful!',
-        _id: user._id,
         username: user.username,
         email: user.email,
         token: generateToken(user._id),
@@ -138,31 +137,30 @@ const validateResetPin = async (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
-  const { resetPin } = req.params;
-  const { newPassword } = req.body;
+  const { resetPin, newPassword } = req.body;
 
-  if (!resetPin || !newPassword || newPassword.length < 6) {
-    return res.status(400).json({ message: 'Invalid reset pin or password' });
+  if (!newPassword || newPassword.length < 6) {
+    return res.status(400).json({ message: 'Password must be at least 6 characters' });
   }
 
   try {
-    console.log(`Searching for user with resetPin: ${resetPin}`);
+  
     const user = await User.findOne({
       resetPasswordPin: resetPin,
-      resetPasswordExpire: { $gt: Date.now() },
+      resetPasswordExpire: { $gt: Date.now() }
     });
 
     if (!user) {
-      console.log(`User not found or pin expired: ${resetPin}`);
       return res.status(400).json({ message: 'Invalid or expired pin' });
     }
 
-    console.log(`User found: ${user.email}`);
+ 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(newPassword, salt);
 
     user.resetPasswordPin = undefined;
     user.resetPasswordExpire = undefined;
+
 
     await user.save();
 
@@ -172,6 +170,7 @@ const resetPassword = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 
 module.exports = {
