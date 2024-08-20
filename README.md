@@ -47,7 +47,7 @@ This is the backend for a Recipe App that allows users to search for recipes, vi
    JWT_SECRET=your_jwt_secret
    EMAIL_USER=your_email@gmail.com
    EMAIL_PASS=your_email_password
-   SPOONACULAR_API_KEY=your_spoonacular_api_key
+   RECIPE_API_KEY=your_spoonacular_api_key
    ```
 
 4. Start the server:
