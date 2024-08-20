@@ -171,6 +171,10 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const logoutUser = (req, res) => {
+
+  res.status(200).json({ message: 'Logout successful' });
+};
 
 
 module.exports = {
@@ -179,4 +183,5 @@ module.exports = {
   forgotPassword,
   validateResetPin,
   resetPassword,
+  logoutUser,
 };
