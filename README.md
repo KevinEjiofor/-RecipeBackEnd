@@ -57,16 +57,27 @@ This is the backend for a Recipe App that allows users to search for recipes, vi
    ```
 
 5. The server will run on `http://localhost:3000`. You can test the endpoints using Postman or any API testing tool.
-
 ## API Endpoints
 
-- **POST** `/auth/register`: Register a new user (email verification is required)
+### Authentication
+- **POST** `/auth/register`: Register a new user
 - **POST** `/auth/login`: Login and receive a JWT
-- **GET** `/auth/verify-email`: Verify email using the token sent to the user's email
+- **POST** `/auth/forgotpassword`: Request a password reset link
+- **PUT** `/auth/validate-reset-pin`: Validate the reset PIN sent to the user
+- **POST** `/auth/resetpassword`: Reset the user's password using the validated PIN
+- **POST** `/auth/logout`: Logout the user and invalidate the JWT
+
+### Recipe Search
 - **GET** `/search`: Search for recipes using a query
+
+### Recipe Details
 - **GET** `/recipe/:id`: Get detailed information about a specific recipe
-- **POST** `/favorites`: Save a recipe to favorites (protected route)
-- **GET** `/favorites`: Retrieve favorite recipes (protected route)
+
+### Favorite Recipes (Protected Routes)
+- **POST** `/favorites`: Save a recipe to favorites
+- **GET** `/favorites`: Retrieve all favorite recipes for the authenticated user
+- **DELETE** `/favorites/:id`: Remove a recipe from favorites
+
 
 ## Assumptions
 
