@@ -48,14 +48,12 @@ const loginUser = async (req, res) => {
   try {
     const user = await User.findOne({ email: email });
 
-    const hashedPassword = user.password;
-
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    const isMatch = await bcrypt.compare(password, hashedPassword);
-    
 
+    const isMatch = await bcrypt.compare(password, user.password);
+    
     if (isMatch) {
       res.json({
         message: 'Login successful!',
@@ -71,6 +69,7 @@ const loginUser = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 
 const forgotPassword = async (req, res) => {
